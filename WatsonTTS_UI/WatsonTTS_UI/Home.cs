@@ -143,17 +143,19 @@ namespace WatsonTTS_UI
             }
             catch (ServiceResponseException ex)
             {
-                OutToLog("Error occured during synthetization.", true);
+                OutToLog("Service response exception occured during synthetization.", true);
                 OutToLog(ex.Message);
                 OutToLog(ex.Response.ToString());
                 OutToLog($"{ex.ResponseMessage.StatusCode}: {ex.ResponseMessage.RequestMessage.Content}");
+                OutToLog(ex.InnerException.Message);
                 LockUI(false);
                 return;
             }
             catch (Exception ex)
             {
-                OutToLog(@"Error occured during synthetization.", true);
+                OutToLog(@"General exception occured during synthetization.", true);
                 OutToLog($"Error description: {ex.Message}");
+                OutToLog(ex.InnerException.Message);
                 LockUI(false);
                 return;
             }
