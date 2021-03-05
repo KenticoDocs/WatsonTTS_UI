@@ -117,4 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="log.Text" xml:space="preserve">
+    <value>README:
+- Speak, pitch, and rate tags are added automatically. No need to add them in the file itself.
+- Use keyboard shortcuts when your cursor is in this log - (c) for clearing the log, (p) for saving the presents, and (l) for launching.
+- Versioning of the output file adds a date&amp;time stamp to the file name automatically.
+========================================</value>
+  </data>
+  <metadata name="openFileDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <metadata name="folderBrowserDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>184, 17</value>
+  </metadata>
 </root>

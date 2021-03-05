@@ -43,7 +43,21 @@ namespace WatsonTTS_UI
                 }
                 else
                 {
-                    OutToLog(@"Error: Presets file was in an incompatible format.", true);
+                    foreach (string preset in presets)
+                    {
+                        string[] words = preset.Split('#');
+                        if (this.Controls.ContainsKey(words[0]))
+                        {
+                            if (this.Controls[words[0]] is TextBox)
+                            {
+                                this.Controls[words[0]].Text = words[1];
+                            }
+                            else if (this.Controls[words[0]] is CheckBox)
+                            {
+                                (this.Controls[words[0]] as CheckBox).Checked = words[1].ToLower() == "true" ? true : false;
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -59,10 +73,17 @@ namespace WatsonTTS_UI
             {
                 using (StreamWriter sw = new StreamWriter(PresetPath, false))
                 {
-                    sw.WriteLine(authkey.Text);
-                    sw.WriteLine(watsonurl.Text);
-                    sw.WriteLine(inputfile.Text);
-                    sw.WriteLine(outputfile.Text);
+                    foreach (Control control in this.Controls)
+                    {
+                        if (control is TextBox)
+                        {
+                            sw.WriteLine($"{control.Name}#{control.Text}");
+                        }
+                        else if (control is CheckBox)
+                        {
+                            sw.WriteLine(control.Name + "#" + (control as CheckBox).Checked.ToString());
+                        }
+                    }
                     sw.Close();
                 }
 
@@ -165,7 +186,28 @@ namespace WatsonTTS_UI
             // Create audiofile
             try
             {
-                string outputFilePath = Directory.GetCurrentDirectory() + @"\" + (outputfile.Text.Length > 0 ? outputfile.Text + ".wav" : "audio.wav");
+                string outputDirectoryPath = outputfiledirectory.Text;
+                if (!Directory.Exists(outputDirectoryPath))
+                {
+                    outputDirectoryPath = Directory.GetCurrentDirectory() + @"\" + outputDirectoryPath;
+
+                    if (!Directory.Exists(outputDirectoryPath))
+                    {
+                        outputDirectoryPath = Directory.GetCurrentDirectory() + outputDirectoryPath;
+
+                        if (!File.Exists(outputDirectoryPath))
+                        {
+                            outputDirectoryPath = Directory.GetCurrentDirectory();
+                        }
+                    }
+                }
+
+                if (!outputDirectoryPath.EndsWith(@"\"))
+                {
+                    outputDirectoryPath = outputDirectoryPath + @"\";
+                }
+
+                string outputFilePath = outputDirectoryPath + (outputfile.Text.Length > 0 ? outputfile.Text : "watson_audio") + (outputfile_versioning.Checked ? "-" + DateTime.Now.ToString("yyyyMMddHHmmss") : "") + ".wav";
                 using (FileStream fs = File.Create(outputFilePath))
                 {
                     synthResult.Result.WriteTo(fs);
@@ -187,10 +229,10 @@ namespace WatsonTTS_UI
 
         private void LockUI(bool lockUI)
         {
-            authkey.Enabled = !lockUI;
-            watsonurl.Enabled = !lockUI;
-            inputfile.Enabled = !lockUI;
-            outputfile.Enabled = !lockUI;
+            foreach (Control control in this.Controls)
+            {
+                control.Enabled = !lockUI;
+            }
         }
 
         private void watsonconfig_label_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -226,6 +268,50 @@ namespace WatsonTTS_UI
                 case 'c':
                     clearlog.PerformClick();
                     break;
+            }
+        }
+
+        private void browseinput_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog1 = new OpenFileDialog()
+            {
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
+                RestoreDirectory = true,
+                Title = "Choose the input file",
+                DefaultExt = "xml",
+                Filter = "XML files (*.xml)|*.xml|Text files (*.txt)|*.txt|All files (*.*)|*.*",
+                CheckFileExists = true,
+                CheckPathExists = true,
+                AddExtension = true,
+                FilterIndex = 0,
+                Multiselect = false
+            };
+
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                inputfile.Text = openFileDialog1.FileName;
+            }
+        }
+
+        private void outputfile_versioning_CheckedChanged(object sender, EventArgs e)
+        {
+            if (outputfile_versioning.Checked)
+            {
+                outputfile_tooltip.Text = "-yyyymmddhhmmss.wav";
+            }
+            else
+            {
+                outputfile_tooltip.Text = ".wav";
+            }
+        }
+
+        private void browseoutput_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog folderBrowserDialog1 = new FolderBrowserDialog();
+
+            if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
+            {
+                outputfiledirectory.Text = folderBrowserDialog1.SelectedPath;
             }
         }
     }
