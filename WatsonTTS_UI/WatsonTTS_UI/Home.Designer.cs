@@ -43,13 +43,14 @@
             this.filesconfig = new System.Windows.Forms.Label();
             this.inputfile_tooltip = new System.Windows.Forms.Label();
             this.outputfile_tooltip = new System.Windows.Forms.Label();
+            this.clearlog = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // authkey
             // 
             this.authkey.Location = new System.Drawing.Point(158, 42);
             this.authkey.Name = "authkey";
-            this.authkey.Size = new System.Drawing.Size(432, 22);
+            this.authkey.Size = new System.Drawing.Size(732, 22);
             this.authkey.TabIndex = 0;
             // 
             // authkey_label
@@ -95,38 +96,44 @@
             // 
             // savepresets
             // 
-            this.savepresets.Location = new System.Drawing.Point(344, 282);
+            this.savepresets.Location = new System.Drawing.Point(616, 287);
             this.savepresets.Name = "savepresets";
-            this.savepresets.Size = new System.Drawing.Size(117, 36);
+            this.savepresets.Size = new System.Drawing.Size(134, 36);
             this.savepresets.TabIndex = 6;
-            this.savepresets.Text = "Save presets";
+            this.savepresets.Text = "Save presets (p)";
             this.savepresets.UseVisualStyleBackColor = true;
             this.savepresets.Click += new System.EventHandler(this.savepresets_Click);
             // 
             // launchtts
             // 
-            this.launchtts.Location = new System.Drawing.Point(473, 282);
+            this.launchtts.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.launchtts.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.launchtts.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.launchtts.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.launchtts.Location = new System.Drawing.Point(756, 287);
             this.launchtts.Name = "launchtts";
-            this.launchtts.Size = new System.Drawing.Size(117, 36);
+            this.launchtts.Size = new System.Drawing.Size(134, 36);
             this.launchtts.TabIndex = 7;
-            this.launchtts.Text = "Launch";
-            this.launchtts.UseVisualStyleBackColor = true;
+            this.launchtts.Text = "Launch (l)";
+            this.launchtts.UseVisualStyleBackColor = false;
             this.launchtts.Click += new System.EventHandler(this.launchtts_Click);
             // 
             // log
             // 
-            this.log.Enabled = false;
+            this.log.Font = new System.Drawing.Font("Consolas", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.log.Location = new System.Drawing.Point(15, 338);
             this.log.Name = "log";
-            this.log.Size = new System.Drawing.Size(575, 246);
+            this.log.ReadOnly = true;
+            this.log.Size = new System.Drawing.Size(880, 414);
             this.log.TabIndex = 8;
             this.log.Text = "";
+            this.log.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.log_KeyPress);
             // 
             // watsonurl
             // 
             this.watsonurl.Location = new System.Drawing.Point(158, 83);
             this.watsonurl.Name = "watsonurl";
-            this.watsonurl.Size = new System.Drawing.Size(432, 22);
+            this.watsonurl.Size = new System.Drawing.Size(732, 22);
             this.watsonurl.TabIndex = 10;
             // 
             // watsonurl_label
@@ -178,11 +185,22 @@
             this.outputfile_tooltip.TabIndex = 14;
             this.outputfile_tooltip.Text = "File name only without format.";
             // 
+            // clearlog
+            // 
+            this.clearlog.Location = new System.Drawing.Point(476, 287);
+            this.clearlog.Name = "clearlog";
+            this.clearlog.Size = new System.Drawing.Size(134, 36);
+            this.clearlog.TabIndex = 15;
+            this.clearlog.Text = "Clear log (c)";
+            this.clearlog.UseVisualStyleBackColor = true;
+            this.clearlog.Click += new System.EventHandler(this.clearlog_Click);
+            // 
             // Home
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(608, 598);
+            this.ClientSize = new System.Drawing.Size(907, 764);
+            this.Controls.Add(this.clearlog);
             this.Controls.Add(this.outputfile_tooltip);
             this.Controls.Add(this.inputfile_tooltip);
             this.Controls.Add(this.filesconfig);
@@ -198,8 +216,11 @@
             this.Controls.Add(this.inputfile_label);
             this.Controls.Add(this.authkey_label);
             this.Controls.Add(this.authkey);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "Home";
             this.Text = "Watson TTS UI";
+            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Home_KeyPress);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -222,6 +243,7 @@
         private System.Windows.Forms.Label filesconfig;
         private System.Windows.Forms.Label inputfile_tooltip;
         private System.Windows.Forms.Label outputfile_tooltip;
+        private System.Windows.Forms.Button clearlog;
     }
 }
 

@@ -83,14 +83,14 @@ namespace WatsonTTS_UI
                 additionalSpace = "\r\n";
             }
 
+            string textToWrite = DateTime.Now.ToLongTimeString() + ": " + output + additionalSpace;
+
             if (!string.IsNullOrWhiteSpace(log.Text))
             {
-                log.AppendText("\r\n" + output + additionalSpace);
+                textToWrite = "\r\n" + textToWrite;
             }
-            else
-            {
-                log.AppendText(output + additionalSpace);
-            }
+
+            log.AppendText(textToWrite);
             log.ScrollToCaret();
         }
 
@@ -196,6 +196,37 @@ namespace WatsonTTS_UI
         private void watsonconfig_label_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Process.Start("https://cloud.ibm.com/services/text-to-speech/crn%3Av1%3Abluemix%3Apublic%3Atext-to-speech%3Aeu-de%3Aa%2Faaa049bd7fc048f993d071ec5e2dfd24%3Ac7be80fe-a6be-493c-83d6-fa1866e63c41%3A%3A?paneId=manage");
+        }
+
+        private void Home_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            PressKey(e.KeyChar);
+        }
+
+        private void clearlog_Click(object sender, EventArgs e)
+        {
+            log.Clear();
+        }
+
+        private void log_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            PressKey(e.KeyChar);
+        }
+
+        private void PressKey(char pressedKey)
+        {
+            switch (pressedKey)
+            {
+                case 'p':
+                    savepresets.PerformClick();
+                    break;
+                case 'l':
+                    launchtts.PerformClick();
+                    break;
+                case 'c':
+                    clearlog.PerformClick();
+                    break;
+            }
         }
     }
 }
